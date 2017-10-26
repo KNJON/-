@@ -1,0 +1,61 @@
+1.执行安装包安装MongoDB
+2.将MongoDB的bin目录添加到环境变量path下
+	C:\Program Files\MongoDB\Server\3.2\bin
+3.在c盘根目录创建如下文件夹
+		data
+			- db
+4.打开命令行窗口输入mongod启动数据库服务器
+mongod --dbpath E:\webSoftware\data\db
+5.打开一个新的命令行窗口输入mongo启动数据库的客户端
+	
+	
+服务器
+	- 服务器负责在计算机创建数据库
+	- 使用数据库需要先启动服务器
+	- MongoDB的默认端口号 27017
+		- 通过 --port 来指定端口号，端口号尽量使用四位以上，不要超过65535
+			不能使用其他服务占用的端口号
+	- MongoDB数据库默认会存放在C盘根目录下的data/db
+		可以通过 --dbpath 指令来指定数据库的目录
+	- 注意：32位系统
+		- 第一次启动 使用如下指令
+			mongod --storageEngine=mmapv1
+		
+
+客户端	
+	- 我们通过客户端来管理数据库
+	- 使用mongo来启动客户端
+	
+将MongoDB设置为windows系统服务
+	1.在c盘根目录创建如下文件夹
+		data/db
+		data/log
+		
+	2.在MongoDB的安装目录添加一个配置文件	*****
+		mongod.cfg
+		
+	3.以管理员身份打开命令行窗口	
+
+	4.执行以下指令  *****		
+		
+		sc.exe create MongoDB binPath= "\"mongodb的bin目录\mongod.exe\" --service --config=\"mongodb的安装目录\mongod.cfg\"" DisplayName= "MongoDB" start= "auto"
+		sc.exe create MongoDB binPath= "\"E:\webSoftware\mongoDB\bin\mongod.exe\" --service --config=\"E:\webSoftware\mongoDB\mongod.cfg\"" DisplayName= "MongoDB" start= "auto"
+		
+	5.打开系统服务器，启动名为MongoDB的服务	
+	
+	6.如果无法启动服务
+		- 在管理员的命令行窗口中输入如下指令
+			sc delete MongoDB
+			
+	7.重复1		
+
+
+
+
+
+
+
+
+	
+	
+	
