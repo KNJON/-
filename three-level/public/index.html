@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script type="text/javascript" src="/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="/template-web.js"></script>
+	<script type="text/javascript">
+		/*
+			获取省份
+		 	http://127.0.0.1:3000/getSheng
+
+		 	获取城市
+			 http://127.0.0.1:3000/getDi?sheng=14
+
+		 	获取区县
+		 	http://127.0.0.1:3000/getXian?sheng=14&di=02
+		 */
+		$(function () {
+
+			$.get("/getSheng",function (data) {
+                var html = template("temp01",{data:data , name:"sheng"});
+                $("#sheng").append(html);
+			});
+
+
+
+			$("#sheng").change(function () {
+				var sheng = this.value;
+				$("#di").children(":not(:first)").remove();
+                $("#xian").children(":not(:first)").remove();
+
+				$.get("/getDi",{sheng:sheng},function (data) {
+                    var html = template("temp01",{data:data,name:"di"});
+                    $("#di").append(html);
+                })
+            });
+
+            $("#di").change(function () {
+                var sheng = $("#sheng").val();
+                var di = this.value;
+                $("#xian").children(":not(:first)").remove();
+
+                $.get("/getXian",{sheng:sheng,di:di},function (data) {
+                    var html = template("temp01",{data:data,name:"xian"});
+                    $("#xian").append(html);
+                })
+            })
+        })
+
+
+	</script>
+</head>
+<body>
+	<script id="temp01" type="text/html">
+		{{if data.status == "ok"}}
+		{{each data.list}}
+		<option value="{{$value[name]}}">{{$value.name}}</option>
+		{{/each}}
+		{{/if}}
+	</script>
+
+<select id="sheng">
+	<option>请选择省份</option>
+</select> 省
+<select id="di">
+	<option>请选择市</option>
+</select> 市
+
+<select id="xian">
+	<option>请选择区(县)</option>
+</select> 区(县)
+
+
+</body>
+</html>
